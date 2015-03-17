@@ -11,3 +11,5 @@ do
     shift
 done
 
+git add list
+

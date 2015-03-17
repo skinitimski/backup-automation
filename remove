@@ -1,0 +1,34 @@
+#!/bin/bash
+
+if [ ! -a "$1" ]
+then
+    echo "Tracked file '$1' doesn't exist. If it was deleted, you'll have to fix the list manually."
+fi
+
+LIST=list
+TMP=list.tmp
+
+mv -f $LIST $TMP
+
+while read LINE
+do
+    if [ "$1" != "$LINE" ]
+    then
+        echo $LINE >> $LIST
+    fi
+done < $TMP
+
+rm $TMP
+
+BASENAME=`basename $1`
+
+if [ -d "$1" ]
+then
+    git rm -r $BASENAME
+elif [ -f "$1" ]
+then
+    git rm $BASENAME
+fi
+
+git status
+
