@@ -2,22 +2,32 @@
 
 while read FILE
 do
-    echo $FILE
+    IFS=$'\t' read -ra PARTS <<< "$LINE"
+
+    FILE=${PARTS[0]}
 
     if [ -n "$FILE" ]
     then
-        BASENAME=`basename $FILE`
-        if [ -f $FILE ]
+        LOCAL=${PARTS[1]}
+
+        if [ -z "$LOCAL" ]
         then
-            cp -f $BASENAME $FILE
-        elif [ -d $FILE ]
+            LOCAL=.$FILE
+        fi
+
+        echo $LOCAL -\> $FILE
+
+        if [ -f $LOCAL ]
+        then
+            mkdir -p `dirname $FILE`
+            cp -f $LOCAL $FILE
+        elif [ -d $LOCAL ]
         then
             if [ -a $FILE ]
             then
-                cp -fr $BASENAME/* $FILE
-            else
-                cp -fr $BASENAME .
+                rm -fR $FILE
             fi
+            cp -r $LOCAL $FILE
         fi
     fi
 done < list

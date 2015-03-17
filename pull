@@ -1,26 +1,39 @@
 #!/bin/bash
 
-while read FILE
+while read LINE
 do
-    echo $FILE
+    IFS=$'\t' read -ra PARTS <<< "$LINE"
+
+    FILE=${PARTS[0]}
 
     if [ -n "$FILE" ]
     then
-        BASENAME=`basename $FILE`
-        if [ -f $FILE ]
+
+        LOCAL=${PARTS[1]}
+
+        if [ -z "$LOCAL" ]
         then
-            cp $FILE $BASENAME
-            git add $BASENAME
-        elif [ -d $FILE ]
-        then
-            if [ -a $BASENAME ]
-            then
-                cp -r $FILE/* $BASENAME
-            else
-                cp -r $FILE .
-            fi
-            git add $BASENAME
+            LOCAL=.$FILE
         fi
+
+        echo $FILE -\> $LOCAL
+
+        if [ -f "$FILE" ]
+        then
+            mkdir -p `dirname $LOCAL`
+            cp $FILE $LOCAL
+            git add $LOCAL
+        elif [ -d "$FILE" ]
+        then
+            if [ -a "$LOCAL" ]
+            then
+                rm -fR $FILE
+            fi
+            cp -r $FILE $LOCAL
+            git add $LOCAL
+        fi
+    else
+        echo 
     fi
 done < list
 

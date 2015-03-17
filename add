@@ -1,15 +1,28 @@
 #!/bin/bash
 
-while [ -n "$1" ]
-do
-    if [ -a $1 ]
-    then
-        echo $1 >> list
-    else
-        "Failed to add '$1'; doesn't exist."
-    fi
-    shift
-done
+if [ -z "$1" ]
+then
+    echo "add file \<local\>"
+fi
+
+if [ "${1:0:1}" != "/" ]
+then
+    echo "Failed to add '$1'; given path must be absoulte."
+    exit 1;
+fi
+
+if [ ! -e $1 ]
+then
+    echo "Failed to add '$1'; doesn't exist."
+    exit 2;
+fi
+
+if [ -z "$2" ]
+then
+    echo $1 >> list
+else
+    echo $1$'\t'$2 >> list
+fi
 
 git add list
 

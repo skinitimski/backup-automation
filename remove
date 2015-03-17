@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ ! -a "$1" ]
+if [ ! -e $1 ]
 then
     echo "Tracked file '$1' doesn't exist. If it was deleted, you'll have to fix the list manually."
 fi
@@ -10,11 +10,25 @@ TMP=list.tmp
 
 mv -f $LIST $TMP
 
+LOCAL_HOLD=''
+
 while read LINE
 do
-    if [ "$1" != "$LINE" ]
+    IFS=$'\t' read -ra PARTS <<< "$LINE"
+
+    FILE=${PARTS[0]}
+    LOCAL=${PARTS[1]}
+
+    if [ "$1" != "$FILE" ]
     then
-        echo $LINE >> $LIST
+        if [ -z "$LOCAL" ]
+        then
+            echo $FILE >> $LIST
+        else
+            echo $FILE$'\t'$LOCAL >> $LIST
+        fi
+    else
+        LOCAL_HOLD=$LOCAL
     fi
 done < $TMP
 
@@ -22,14 +36,12 @@ rm $TMP
 
 git add list
 
-BASENAME=`basename $1`
-
-if [ -d "$1" ]
+if [ -d $1 ]
 then
-    git rm -r $BASENAME
+    git rm -r $LOCAL_HOLD
 elif [ -f "$1" ]
 then
-    git rm $BASENAME
+    git rm $LOCAL_HOLD
 fi
 
 git status
