@@ -20,6 +20,8 @@ done < $TMP
 
 rm $TMP
 
+git add list
+
 BASENAME=`basename $1`
 
 if [ -d "$1" ]
