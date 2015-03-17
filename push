@@ -1,0 +1,24 @@
+#!/bin/bash
+
+while read FILE
+do
+    echo $FILE
+
+    if [ -n "$FILE" ]
+    then
+        BASENAME=`basename $FILE`
+        if [ -f $FILE ]
+        then
+            cp -f $BASENAME $FILE
+        elif [ -d $FILE ]
+        then
+            if [ -a $FILE ]
+            then
+                cp -fr $BASENAME/* $FILE
+            else
+                cp -fr $BASENAME .
+            fi
+        fi
+    fi
+done < list
+

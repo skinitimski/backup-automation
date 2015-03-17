@@ -1,0 +1,13 @@
+#!/bin/bash
+
+while [ -n "$1" ]
+do
+    if [ -a $1 ]
+    then
+        echo $1 >> list
+    else
+        "Failed to add '$1'; doesn't exist."
+    fi
+    shift
+done
+

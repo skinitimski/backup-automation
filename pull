@@ -1,0 +1,28 @@
+#!/bin/bash
+
+while read FILE
+do
+    echo $FILE
+
+    if [ -n "$FILE" ]
+    then
+        BASENAME=`basename $FILE`
+        if [ -f $FILE ]
+        then
+            cp $FILE $BASENAME
+            git add $BASENAME
+        elif [ -d $FILE ]
+        then
+            if [ -a $BASENAME ]
+            then
+                cp -r $FILE/* $BASENAME
+            else
+                cp -r $FILE .
+            fi
+            git add $BASENAME
+        fi
+    fi
+done < list
+
+git status
+
