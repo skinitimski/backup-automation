@@ -16,21 +16,23 @@ do
             LOCAL=.$FILE
         fi
 
-        echo $FILE -\> $LOCAL
 
         if [ -f "$FILE" ]
         then
             mkdir -p `dirname $LOCAL`
-            cp $FILE $LOCAL
+            cp -v $FILE $LOCAL
             git add $LOCAL
         elif [ -d "$FILE" ]
         then
             if [ -a "$LOCAL" ]
             then
-                rm -fR $FILE
+                rm -f -R $FILE
             fi
-            cp -r $FILE $LOCAL
+            cp -r -v $FILE $LOCAL
             git add $LOCAL
+        else
+            echo $FILE -\> $LOCAL
+            echo "    File is missing."
         fi
     else
         echo 
