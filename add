@@ -3,6 +3,7 @@
 if [ -z "$1" ]
 then
     echo "add file \<local\>"
+    echo "  where \<local\> is an absolute path"
 fi
 
 if [ "${1:0:1}" != "/" ]

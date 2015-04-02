@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [ -z "$1" ]
+then
+    echo "remove file \<local\>"
+    echo "  where \<local\> is an absolute path and a path in the file list"
+fi
+
 if [ ! -e $1 ]
 then
     echo "Tracked file '$1' doesn't exist. If it was deleted, you'll have to fix the list manually."
@@ -34,7 +40,7 @@ done < $TMP
 
 rm $TMP
 
-git add list
+git add $LIST
 
 if [ -d $1 ]
 then
