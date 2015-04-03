@@ -30,7 +30,7 @@ do
         then
             if [ -a "$LOCAL" ]
             then
-                rm -f -R $FILE
+                rm -f -R $LOCAL
             fi
             cp -r -v $FILE $LOCAL
             git add $LOCAL
