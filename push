@@ -6,6 +6,8 @@ do
 
     FILE=${PARTS[0]}
 
+    FILE=`eval echo $FILE`
+
     if [ -n "$FILE" ]
     then
         LOCAL=${PARTS[1]}

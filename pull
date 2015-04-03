@@ -1,10 +1,14 @@
 #!/bin/bash
 
+
+
 while read LINE
 do
     IFS=$'\t' read -ra PARTS <<< "$LINE"
 
     FILE=${PARTS[0]}
+
+    FILE=`eval echo $FILE`
 
     if [ -n "$FILE" ]
     then
