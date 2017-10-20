@@ -42,12 +42,23 @@ rm $TMP
 
 git add $LIST
 
-if [ -d $1 ]
+if [ -z "$LOCAL_HOLD" ]
 then
-    git rm -r $LOCAL_HOLD
-elif [ -f "$1" ]
-then
-    git rm $LOCAL_HOLD
+    if [ -d $1 ]
+    then
+        git rm -r .$1
+    elif [ -f "$1" ]
+    then
+        git rm .$1
+    fi
+else
+    if [ -d $1 ]
+    then
+        git rm -r $LOCAL_HOLD
+    elif [ -f "$1" ]
+    then
+        git rm $LOCAL_HOLD
+    fi
 fi
 
 git status
