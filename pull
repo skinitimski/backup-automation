@@ -1,7 +1,5 @@
 #!/bin/bash
 
-
-
 while read LINE
 do
     IFS=$'\t' read -ra PARTS <<< "$LINE"
@@ -20,6 +18,7 @@ do
             LOCAL=.$FILE
         fi
 
+        echo $FILE -\> $LOCAL
 
         if [ -f "$FILE" ]
         then
@@ -35,7 +34,6 @@ do
             cp -r -v $FILE $LOCAL
             git add $LOCAL
         else
-            echo $FILE -\> $LOCAL
             echo "    File is missing."
         fi
     else

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-while read FILE
+while read LINE
 do
     IFS=$'\t' read -ra PARTS <<< "$LINE"
 
@@ -10,6 +10,7 @@ do
 
     if [ -n "$FILE" ]
     then
+        
         LOCAL=${PARTS[1]}
 
         if [ -z "$LOCAL" ]
