@@ -31,6 +31,8 @@ do
             fi
             cp -r $LOCAL $FILE
         fi
+    else
+        echo
     fi
 done < list
 
